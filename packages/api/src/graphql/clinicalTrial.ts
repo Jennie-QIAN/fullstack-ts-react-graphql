@@ -29,16 +29,15 @@ export const ClinicalTrialQuery = extendType({
     t.nonNull.list.field("clinicalTrials", {
       type: "ClinicalTrial",
       args: {
+        countrySortDirection: nullable(stringArg()),
         patientsSortDirection: nullable(stringArg()),
       },
-      resolve(_, { patientsSortDirection }) {
-        if (patientsSortDirection === "asc") {
-          return trials.sort((a, b) => b.patients - a.patients);
-        }
-        if (patientsSortDirection === "desc") {
-          return trials.sort((a, b) => a.patients - b.patients);
-        }
-        return trials;
+      resolve(_, { countrySortDirection, patientsSortDirection }) {
+        return trials.sort((a, b) => {
+          const countrySort = countrySortDirection === "asc" ? (a.country.localeCompare(b.country)) : countrySortDirection === "desc" ? (b.country.localeCompare(a.country)) : 0
+          const patientSort = patientsSortDirection === "asc" ? (a.patients - b.patients) : patientsSortDirection === "desc" ? (b.patients - a.patients) : 0
+          return countrySort || patientSort
+        })
       },
     });
   },

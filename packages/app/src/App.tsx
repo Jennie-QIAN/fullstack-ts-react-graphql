@@ -19,8 +19,8 @@ const Content = styled.div`
 `;
 
 const clinicalTrialsQuery = gql`
-  query ClinicalTrials($patientsSortDirection: String) {
-    clinicalTrials(patientsSortDirection: $patientsSortDirection) {
+  query ClinicalTrials($countrySortDirection: String, $patientsSortDirection: String) {
+    clinicalTrials(countrySortDirection: $countrySortDirection, patientsSortDirection: $patientsSortDirection) {
       site
       country
       city
@@ -29,14 +29,15 @@ const clinicalTrialsQuery = gql`
   }
 `;
 
-export type PatientsSortDirection = "asc" | "desc" | null;
+export type SortDirection = "asc" | "desc" | null;
 
 const App: React.FC = () => {
+  const [countrySortDirection, setCountrySortDirection] = useState<SortDirection>(null)
   const [patientsSortDirection, setPatientsSortDirection] =
-    useState<PatientsSortDirection>(null);
+    useState<SortDirection>(null);
 
   const { loading, error, data } = useQuery(clinicalTrialsQuery, {
-    variables: { patientsSortDirection },
+    variables: { countrySortDirection, patientsSortDirection },
   });
 
   return (
@@ -44,6 +45,8 @@ const App: React.FC = () => {
       <Content>
         {!loading && !error && (
           <ClinicalTrials
+            countrySortDirection={countrySortDirection}
+            setCountrySortDirection={setCountrySortDirection}
             patientsSortDirection={patientsSortDirection}
             setPatientsSortDirection={setPatientsSortDirection}
             clinicalTrials={data.clinicalTrials}

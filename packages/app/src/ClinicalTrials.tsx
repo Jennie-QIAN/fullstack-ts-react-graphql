@@ -51,21 +51,37 @@ const Cell = styled.div`
   }
 `;
 
-export type PatientsSortDirection = "asc" | "desc" | null;
+export type SortDirection = "asc" | "desc" | null;
 
 interface Props {
   clinicalTrials: Array<any>;
-  patientsSortDirection: PatientsSortDirection;
+  countrySortDirection: SortDirection;
+  setCountrySortDirection: (
+    countrySortDirection: SortDirection
+  ) => void;
+  patientsSortDirection: SortDirection;
   setPatientsSortDirection: (
-    patientsSortDirection: PatientsSortDirection
+    patientsSortDirection: SortDirection
   ) => void;
 }
 
 const ClinicalTrials: React.FC<Props> = ({
   clinicalTrials,
+  countrySortDirection,
+  setCountrySortDirection,
   patientsSortDirection,
   setPatientsSortDirection,
 }: Props) => {
+  const toggleCountrySortDirection = useCallback(() => {
+    if (countrySortDirection == null) {
+      setCountrySortDirection("asc");
+    } else if (countrySortDirection === "asc") {
+      setCountrySortDirection("desc");
+    } else {
+      setCountrySortDirection(null);
+    }
+  }, [countrySortDirection, setCountrySortDirection]);
+
   const togglePatientsSortDirection = useCallback(() => {
     if (patientsSortDirection == null) {
       setPatientsSortDirection("asc");
@@ -82,10 +98,12 @@ const ClinicalTrials: React.FC<Props> = ({
       <Table>
         <Header>
           <HeaderCell>site</HeaderCell>
-          <HeaderCell>country</HeaderCell>
+          <ClickableHeaderCell onClick={toggleCountrySortDirection}>
+            country {sortDirectionIndicator(countrySortDirection)}
+          </ClickableHeaderCell>
           <HeaderCell>city</HeaderCell>
           <ClickableHeaderCell onClick={togglePatientsSortDirection}>
-            patients{sortDirectionIndicator(patientsSortDirection)}
+            patients {sortDirectionIndicator(patientsSortDirection)}
           </ClickableHeaderCell>
         </Header>
         <Body>
@@ -104,10 +122,10 @@ const ClinicalTrials: React.FC<Props> = ({
 };
 
 const sortDirectionIndicator = (
-  patientsSortDirection: PatientsSortDirection
+  sortDirection: SortDirection
 ) => {
-  if (patientsSortDirection === "asc") return "↑";
-  if (patientsSortDirection === "desc") return "↓";
+  if (sortDirection === "asc") return "↑";
+  if (sortDirection === "desc") return "↓";
   return "";
 };
 
