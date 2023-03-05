@@ -1,4 +1,4 @@
-import { stringArg, extendType, nullable, objectType } from "nexus";
+import { stringArg, extendType, nullable, objectType, list } from "nexus";
 import { data } from "./data";
 
 export const ClinicalTrial = objectType({
@@ -31,9 +31,14 @@ export const ClinicalTrialQuery = extendType({
       args: {
         countrySortDirection: nullable(stringArg()),
         patientsSortDirection: nullable(stringArg()),
+        countryFilter: nullable(list(stringArg())),
       },
-      resolve(_, { countrySortDirection, patientsSortDirection }) {
-        return trials.sort((a, b) => {
+      resolve(_, { countryFilter, countrySortDirection, patientsSortDirection }) {
+        let filteredTrials = [...trials];
+        if (countryFilter && countryFilter.length > 0) {
+          filteredTrials = trials.filter(trial => countryFilter.includes(trial.country))
+        }
+        return filteredTrials.sort((a, b) => {
           const countrySort = countrySortDirection === "asc" ? (a.country.localeCompare(b.country)) : countrySortDirection === "desc" ? (b.country.localeCompare(a.country)) : 0
           const patientSort = patientsSortDirection === "asc" ? (a.patients - b.patients) : patientsSortDirection === "desc" ? (b.patients - a.patients) : 0
           return countrySort || patientSort

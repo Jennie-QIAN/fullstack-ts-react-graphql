@@ -10,5 +10,5 @@ type ClinicalTrial {
 }
 
 type Query {
-  clinicalTrials(countrySortDirection: String, patientsSortDirection: String): [ClinicalTrial]!
+  clinicalTrials(countryFilter: [String], countrySortDirection: String, patientsSortDirection: String): [ClinicalTrial]!
 }
