@@ -1,0 +1,13 @@
+{
+  "name": "junior-take-home-test",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@3.4.1",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "api": "yarn workspace api",
+    "app": "yarn workspace app"
+  }
+}
