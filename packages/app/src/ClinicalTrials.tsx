@@ -83,6 +83,7 @@ const ClinicalTrials: React.FC<Props> = ({
         <Header>
           <HeaderCell>site</HeaderCell>
           <HeaderCell>country</HeaderCell>
+          <HeaderCell>city</HeaderCell>
           <ClickableHeaderCell onClick={togglePatientsSortDirection}>
             patients{sortDirectionIndicator(patientsSortDirection)}
           </ClickableHeaderCell>
@@ -92,6 +93,7 @@ const ClinicalTrials: React.FC<Props> = ({
             <Row key={clinicalTrial.site}>
               <Cell>{clinicalTrial.site}</Cell>
               <Cell>{clinicalTrial.country}</Cell>
+              <Cell>{clinicalTrial.city}</Cell>
               <Cell>{clinicalTrial.patients}</Cell>
             </Row>
           ))}

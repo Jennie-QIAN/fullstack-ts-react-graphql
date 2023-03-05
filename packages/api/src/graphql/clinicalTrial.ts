@@ -6,9 +6,21 @@ export const ClinicalTrial = objectType({
   definition(t) {
     t.string("site");
     t.string("country");
+    t.string("city");
     t.int("patients");
   },
 });
+
+const capitalizeString = (str: String) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const trials = data.map(trial => {
+  return {
+    ...trial,
+    city: capitalizeString(trial.city)
+  }
+})
 
 export const ClinicalTrialQuery = extendType({
   type: "Query",
@@ -21,12 +33,12 @@ export const ClinicalTrialQuery = extendType({
       },
       resolve(_, { patientsSortDirection }) {
         if (patientsSortDirection === "asc") {
-          return data.sort((a, b) => b.patients - a.patients);
+          return trials.sort((a, b) => b.patients - a.patients);
         }
         if (patientsSortDirection === "desc") {
-          return data.sort((a, b) => a.patients - b.patients);
+          return trials.sort((a, b) => a.patients - b.patients);
         }
-        return data;
+        return trials;
       },
     });
   },

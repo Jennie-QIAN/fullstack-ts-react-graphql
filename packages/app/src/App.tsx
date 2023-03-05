@@ -23,6 +23,7 @@ const clinicalTrialsQuery = gql`
     clinicalTrials(patientsSortDirection: $patientsSortDirection) {
       site
       country
+      city
       patients
     }
   }
