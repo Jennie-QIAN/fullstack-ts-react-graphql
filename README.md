@@ -12,12 +12,15 @@ In this take-home test, you have to improve a web application made of 2 main com
 
 - install [node](https://nodejs.org/en/download/), the version is defined in .nvmrc
 - install [yarn](https://yarnpkg.com/getting-started/install)
-
 ## Install dependencies
 
 ```sh
 yarn
 ```
+
+## VS-Code settings
+- [Install yarn ts sdks for vscode](https://github.com/yarnpkg/berry/issues/1954)
+
 
 # Run
 
