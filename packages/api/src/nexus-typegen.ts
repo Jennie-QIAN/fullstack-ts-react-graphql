@@ -56,6 +56,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     clinicalTrials: Array<NexusGenRootTypes['ClinicalTrial'] | null>; // [ClinicalTrial]!
+    countries: Array<string | null>; // [String]!
   }
 }
 
@@ -68,6 +69,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     clinicalTrials: 'ClinicalTrial'
+    countries: 'String'
   }
 }
 

@@ -26,6 +26,7 @@ const clinicalTrialsQuery = gql`
       city
       patients
     }
+    countries
   }
 `;
 
@@ -44,13 +45,13 @@ const App: React.FC = () => {
   });
 
   const toggleShowFilters = () => setShowFilters((currentShowFilters) => !currentShowFilters);
-  const countries = ["Australia", "Spain", "France", "Chile", "Canada"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCountryFilter(
-      event.target.checked
-        ? [...countryFilter, event.target.id]
-        : countryFilter?.filter(country => country !== event.target.id)
+    setCountryFilter((prev) => {
+      return event.target.checked
+        ? [...prev, event.target.id]
+        : prev.filter(country => country !== event.target.id)
+    }
     )
   }
 
@@ -59,11 +60,11 @@ const App: React.FC = () => {
       <Content>
         <div>
           <button onClick={toggleShowFilters}>Filter</button>
-          {showFilters && (
+          {showFilters && !loading && !error && (
             <div>
               <fieldset>
                 <legend>Country</legend>
-                {countries.map(country => {
+                {data.countries.map((country: string) => {
                   return (
                     <div key={country}>
                       <input
@@ -71,6 +72,7 @@ const App: React.FC = () => {
                         id={country}
                         name="countryFilter"
                         onChange={handleFilterChange}
+                        checked={countryFilter.includes(country)}
                       />
                       <label htmlFor={country}>{country}</label>
                     </div>
