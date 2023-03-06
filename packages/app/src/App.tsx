@@ -1,52 +1,8 @@
-import { useQuery, gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import React, { ChangeEvent, useState } from "react";
-import styled from "styled-components";
 
-import ClinicalTrials from "./ClinicalTrials";
-
-const Layout = styled.div`
-  background: #f6f7fa;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 100%;
-`;
-
-const Content = styled.div`
-  margin-top: 48px;
-  max-width: 1300px;
-  width: 100%;
-`;
-
-const Filter = styled.div`
-  background-color: white;
-  border: 1px solid #20A075;
-  border-radius: 8px;
-  height: 200px;
-  width: 300px;
-  padding: 2em;
-  position: absolute;
-  overflow: scroll;
-  z-index: 30;
-`
-
-const FilterLegend = styled.legend`
-  color: #20A075;
-  font-weight: 500;
-  margin-bottom: 0.5em
-`
-interface ShowFilterBtnProps {
-  readonly showFilter: boolean;
-}
-
-const ShowFilterButton = styled.button<ShowFilterBtnProps>`
-  background-color: ${(props) => (props.showFilter ? "#20A075" : "white")};
-  border: 1px solid #20A075;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;  
-  padding: 1em 2em;
-`
+import ClinicalTrials, { SortDirection } from "./ClinicalTrials";
+import { Content, Filter, FilterLegend, Layout, ShowFilterButton } from "./components";
 
 const clinicalTrialsQuery = gql`
   query ClinicalTrials($countryFilter: [String], $countrySortDirection: String, $patientsSortDirection: String) {
@@ -60,7 +16,6 @@ const clinicalTrialsQuery = gql`
   }
 `;
 
-export type SortDirection = "asc" | "desc" | null;
 export type CountryFilter = Array<string | undefined>;
 
 const App: React.FC = () => {
