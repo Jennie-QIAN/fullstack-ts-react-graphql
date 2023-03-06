@@ -18,6 +18,36 @@ const Content = styled.div`
   width: 100%;
 `;
 
+const Filter = styled.div`
+  background-color: white;
+  border: 1px solid #20A075;
+  border-radius: 8px;
+  height: 200px;
+  width: 300px;
+  padding: 2em;
+  position: absolute;
+  overflow: scroll;
+  z-index: 30;
+`
+
+const FilterLegend = styled.legend`
+  color: #20A075;
+  font-weight: 500;
+  margin-bottom: 0.5em
+`
+interface ShowFilterBtnProps {
+  readonly showFilter: boolean;
+}
+
+const ShowFilterButton = styled.button<ShowFilterBtnProps>`
+  background-color: ${(props) => (props.showFilter ? "#20A075" : "white")};
+  border: 1px solid #20A075;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;  
+  padding: 1em 2em;
+`
+
 const clinicalTrialsQuery = gql`
   query ClinicalTrials($countryFilter: [String], $countrySortDirection: String, $patientsSortDirection: String) {
     clinicalTrials(countryFilter: $countryFilter, countrySortDirection: $countrySortDirection, patientsSortDirection: $patientsSortDirection) {
@@ -59,27 +89,27 @@ const App: React.FC = () => {
     <Layout>
       <Content>
         <div>
-          <button onClick={toggleShowFilters}>Filter</button>
+          <ShowFilterButton showFilter={showFilters} onClick={toggleShowFilters}>
+            Filter
+          </ShowFilterButton>
           {showFilters && !loading && !error && (
-            <div>
-              <fieldset>
-                <legend>Country</legend>
-                {data.countries.map((country: string) => {
-                  return (
-                    <div key={country}>
-                      <input
-                        type="checkbox"
-                        id={country}
-                        name="countryFilter"
-                        onChange={handleFilterChange}
-                        checked={countryFilter.includes(country)}
-                      />
-                      <label htmlFor={country}>{country}</label>
-                    </div>
-                  )
-                })}
-              </fieldset>
-            </div>
+            <Filter>
+              <FilterLegend>Select countries:</FilterLegend>
+              {data.countries.map((country: string) => {
+                return (
+                  <div key={country}>
+                    <input
+                      type="checkbox"
+                      id={country}
+                      name="countryFilter"
+                      onChange={handleFilterChange}
+                      checked={countryFilter.includes(country)}
+                    />
+                    <label htmlFor={country}>{country}</label>
+                  </div>
+                )
+              })}
+            </Filter>
           )}
         </div>
         {!loading && !error && (
