@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { ChangeEvent, useState } from "react";
 
-import ClinicalTrials, { SortDirection } from "./ClinicalTrials";
-import { Content, Filter, FilterLegend, Layout, ShowFilterButton } from "./components";
+import ClinicalTrials, { SortDirection } from "./components/ClinicalTrials";
+import { Content, Filter, FilterLegend, Layout, ShowFilterButton } from "./styledComponents";
 
 const clinicalTrialsQuery = gql`
   query ClinicalTrials($countryFilter: [String], $countrySortDirection: String, $patientsSortDirection: String) {

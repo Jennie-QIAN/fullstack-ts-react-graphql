@@ -1,6 +1,6 @@
 import React from "react";
-import { SortDirection } from "../ClinicalTrials";
-import { Button } from "../components";
+import { SortDirection } from "./ClinicalTrials";
+import { Button } from "../styledComponents";
 
 interface Props {
   sortDirection: SortDirection;

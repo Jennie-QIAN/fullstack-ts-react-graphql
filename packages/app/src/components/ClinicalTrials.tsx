@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback } from "react";
+import React, { Fragment, useCallback, Dispatch, SetStateAction } from "react";
 import {
   Table,
   Header,
@@ -6,21 +6,24 @@ import {
   Body,
   Row,
   Cell,
-} from "./components";
-import SortButton from "./components/SortButton"
+} from "../styledComponents";
+import SortButton from "./SortButton"
+
+export type ClinicalTrial = {
+  site: string;
+  country: string;
+  city: string;
+  patients: number;
+}
 
 export type SortDirection = "asc" | "desc" | null;
 
 interface Props {
-  clinicalTrials: Array<any>;
+  clinicalTrials: Array<ClinicalTrial>;
   countrySortDirection: SortDirection;
-  setCountrySortDirection: (
-    countrySortDirection: SortDirection
-  ) => void;
+  setCountrySortDirection: Dispatch<SetStateAction<SortDirection>>;
   patientsSortDirection: SortDirection;
-  setPatientsSortDirection: (
-    patientsSortDirection: SortDirection
-  ) => void;
+  setPatientsSortDirection: Dispatch<SetStateAction<SortDirection>>;
 }
 
 const ClinicalTrials: React.FC<Props> = ({
@@ -30,24 +33,23 @@ const ClinicalTrials: React.FC<Props> = ({
   patientsSortDirection,
   setPatientsSortDirection,
 }: Props) => {
-  const toggleCountrySortDirection = useCallback(() => {
-    if (countrySortDirection == null) {
-      setCountrySortDirection("asc");
-    } else if (countrySortDirection === "asc") {
-      setCountrySortDirection("desc");
+
+  const toggleDirection = (state: SortDirection, setState: Dispatch<SetStateAction<SortDirection>>) => {
+    if (state == null) {
+      setState("asc");
+    } else if (state === "asc") {
+      setState("desc");
     } else {
-      setCountrySortDirection(null);
+      setState(null);
     }
+  };
+
+  const toggleCountrySortDirection = useCallback(() => {
+    toggleDirection(countrySortDirection, setCountrySortDirection)
   }, [countrySortDirection, setCountrySortDirection]);
 
   const togglePatientsSortDirection = useCallback(() => {
-    if (patientsSortDirection == null) {
-      setPatientsSortDirection("asc");
-    } else if (patientsSortDirection === "asc") {
-      setPatientsSortDirection("desc");
-    } else {
-      setPatientsSortDirection(null);
-    }
+    toggleDirection(patientsSortDirection, setPatientsSortDirection)
   }, [patientsSortDirection, setPatientsSortDirection]);
 
   return (
@@ -79,14 +81,6 @@ const ClinicalTrials: React.FC<Props> = ({
       </Table>
     </Fragment>
   );
-};
-
-const sortDirectionIndicator = (
-  sortDirection: SortDirection
-) => {
-  if (sortDirection === "asc") return "↑";
-  if (sortDirection === "desc") return "↓";
-  return "";
 };
 
 export default ClinicalTrials;
