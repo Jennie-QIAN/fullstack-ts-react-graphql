@@ -69,13 +69,6 @@ export const HeaderCell = styled.div`
   border-radius: 4px;
 `;
 
-export const ClickableHeaderCell = styled(HeaderCell)`
-  cursor: pointer;
-  &:hover {
-    background-color: #b5b6ba;
-  }
-`;
-
 export const Cell = styled.div`
   --border-color: #eaedf1;
   display: table-cell;
@@ -94,3 +87,19 @@ export const Cell = styled.div`
     border-radius: 0 4px 4px 0;
   }
 `;
+
+export const Button = styled.div`
+  background-color: transparent;
+  border: 1px solid #20A075;
+  border-radius: 4px;
+  color: #20A075;
+  cursor: pointer;
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px;
+
+  &:hover {
+    background-color: #20A075;
+    color: white;
+  }
+`

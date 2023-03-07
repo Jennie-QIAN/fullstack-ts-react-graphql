@@ -47,7 +47,7 @@ const App: React.FC = () => {
           <ShowFilterButton showFilter={showFilters} onClick={toggleShowFilters}>
             Filter
           </ShowFilterButton>
-          {showFilters && !loading && !error && (
+          {(showFilters && !loading && !error) ? (
             <Filter>
               <FilterLegend>Select countries:</FilterLegend>
               {data.countries.map((country: string) => {
@@ -65,9 +65,9 @@ const App: React.FC = () => {
                 )
               })}
             </Filter>
-          )}
+          ) : null}
         </div>
-        {!loading && !error && (
+        {(!loading && !error) ? (
           <ClinicalTrials
             countrySortDirection={countrySortDirection}
             setCountrySortDirection={setCountrySortDirection}
@@ -75,7 +75,7 @@ const App: React.FC = () => {
             setPatientsSortDirection={setPatientsSortDirection}
             clinicalTrials={data.clinicalTrials}
           />
-        )}
+        ) : null}
       </Content>
     </Layout>
   );

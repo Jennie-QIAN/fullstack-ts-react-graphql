@@ -3,11 +3,11 @@ import {
   Table,
   Header,
   HeaderCell,
-  ClickableHeaderCell,
   Body,
   Row,
   Cell,
 } from "./components";
+import SortButton from "./components/SortButton"
 
 export type SortDirection = "asc" | "desc" | null;
 
@@ -56,13 +56,15 @@ const ClinicalTrials: React.FC<Props> = ({
       <Table>
         <Header>
           <HeaderCell>site</HeaderCell>
-          <ClickableHeaderCell onClick={toggleCountrySortDirection}>
-            country {sortDirectionIndicator(countrySortDirection)}
-          </ClickableHeaderCell>
+          <HeaderCell>
+            <span>countries</span>
+            <SortButton sortDirection={countrySortDirection} onClick={toggleCountrySortDirection} />
+          </HeaderCell>
           <HeaderCell>city</HeaderCell>
-          <ClickableHeaderCell onClick={togglePatientsSortDirection}>
-            patients {sortDirectionIndicator(patientsSortDirection)}
-          </ClickableHeaderCell>
+          <HeaderCell>
+            <span>patients</span>
+            <SortButton sortDirection={patientsSortDirection} onClick={togglePatientsSortDirection} />
+          </HeaderCell>
         </Header>
         <Body>
           {clinicalTrials.map((clinicalTrial) => (
