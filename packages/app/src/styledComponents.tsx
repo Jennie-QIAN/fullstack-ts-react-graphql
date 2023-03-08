@@ -14,7 +14,7 @@ export const Content = styled.div`
   width: 100%;
 `;
 
-export const Filter = styled.div`
+export const FilterDropdown = styled.div`
   background-color: white;
   border: 1px solid #20A075;
   border-radius: 8px;

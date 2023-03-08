@@ -1,8 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 
 import ClinicalTrials, { SortDirection } from "./components/ClinicalTrials";
-import { Content, Filter, FilterLegend, Layout, ShowFilterButton } from "./styledComponents";
+import Filter, { Countries } from "./components/Filter"
+import { Content, Layout } from "./styledComponents";
 
 const clinicalTrialsQuery = gql`
   query ClinicalTrials($countryFilter: [String], $countrySortDirection: String, $patientsSortDirection: String) {
@@ -12,70 +13,43 @@ const clinicalTrialsQuery = gql`
       city
       patients
     }
-    countries
   }
 `;
 
-export type CountryFilter = Array<string | undefined>;
-
 const App: React.FC = () => {
-  const [countryFilter, setCountryFilter] = useState<CountryFilter>([])
+  const [countryFilter, setCountryFilter] = useState<Countries>([])
   const [countrySortDirection, setCountrySortDirection] = useState<SortDirection>(null)
   const [patientsSortDirection, setPatientsSortDirection] =
     useState<SortDirection>(null);
-  const [showFilters, setShowFilters] = useState(false)
+  const [showFilter, setShowFilter] = useState(false)
 
   const { loading, error, data } = useQuery(clinicalTrialsQuery, {
     variables: { countryFilter, countrySortDirection, patientsSortDirection },
   });
 
-  const toggleShowFilters = () => setShowFilters((currentShowFilters) => !currentShowFilters);
-
-  const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCountryFilter((prev) => {
-      return event.target.checked
-        ? [...prev, event.target.id]
-        : prev.filter(country => country !== event.target.id)
-    }
-    )
-  }
+  if (loading) return (
+    <>Loading clinical trials...</>
+  )
+  if (error) return (
+    <>Oops, something went wrong: {error.message}</>
+  )
 
   return (
     <Layout>
       <Content>
-        <div>
-          <ShowFilterButton showFilter={showFilters} onClick={toggleShowFilters}>
-            Filter
-          </ShowFilterButton>
-          {(showFilters && !loading && !error) ? (
-            <Filter>
-              <FilterLegend>Select countries:</FilterLegend>
-              {data.countries.map((country: string) => {
-                return (
-                  <div key={country}>
-                    <input
-                      type="checkbox"
-                      id={country}
-                      name="countryFilter"
-                      onChange={handleFilterChange}
-                      checked={countryFilter.includes(country)}
-                    />
-                    <label htmlFor={country}>{country}</label>
-                  </div>
-                )
-              })}
-            </Filter>
-          ) : null}
-        </div>
-        {(!loading && !error) ? (
-          <ClinicalTrials
-            countrySortDirection={countrySortDirection}
-            setCountrySortDirection={setCountrySortDirection}
-            patientsSortDirection={patientsSortDirection}
-            setPatientsSortDirection={setPatientsSortDirection}
-            clinicalTrials={data.clinicalTrials}
-          />
-        ) : null}
+        <Filter
+          showFilter={showFilter}
+          setShowFilter={setShowFilter}
+          countryFilter={countryFilter}
+          setCountryFilter={setCountryFilter}
+        />
+        <ClinicalTrials
+          countrySortDirection={countrySortDirection}
+          setCountrySortDirection={setCountrySortDirection}
+          patientsSortDirection={patientsSortDirection}
+          setPatientsSortDirection={setPatientsSortDirection}
+          clinicalTrials={data.clinicalTrials}
+        />
       </Content>
     </Layout>
   );
